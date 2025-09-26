@@ -1,21 +1,19 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
 from uuid import UUID
+from .schemas.user import UserCreate
 
 app = FastAPI()
 
-class UserCreate(BaseModel):
-    id: UUID
-    name: str = Field(..., min_length=3, max_length=50)
-    description: str = Field(..., max_length=300)
-    age: int = Field(..., ge=0, le=120)
+
 
 DisplayUSER = []
 
 @app.get("/user/list")
-def read_root():
-    return DisplayUSER
+def read_root(limit:int=10, sort:int|None = None):
+    print(limit ,"limitt")
+    print(sort)
+    return DisplayUSER 
 
 
 @app.post("/create/user")
