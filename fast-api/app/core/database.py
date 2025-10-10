@@ -1,6 +1,6 @@
 from pathlib import Path
 from sqlalchemy import create_engine
-from sqlmodel import  Session , SQLModel
+from sqlmodel import  Session
 from typing import Annotated
 from fastapi import Depends
 
@@ -15,6 +15,7 @@ engine = create_engine(DATABASE_URL, connect_args=connect_args)
 def get_session():
     with Session(engine) as session:
         yield session
+
 
 
 SessionDep = Annotated[Session, Depends(get_session)]
