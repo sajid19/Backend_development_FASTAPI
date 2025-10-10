@@ -19,7 +19,7 @@ except Exception as e:
     DB_DIR = BASE_DIR
     logger.info("🔄 Using base directory for database")
 
-DATABASE_URL = f"sqlite:///{DB_DIR / 'user.db'}"
+DATABASE_URL = f"sqlite:///{DB_DIR/'user.db'}"
 logger.info(f"📊 Database URL: {DATABASE_URL}")
 
 connect_args = {"check_same_thread": False}
