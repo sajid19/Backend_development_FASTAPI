@@ -1,9 +1,18 @@
-from pydantic import BaseModel, Field
-from uuid import UUID
+# app/schemas/user.py
+from typing import Optional
+from uuid import UUID, uuid4
+from sqlmodel import SQLModel, Field
 
+class UserBase(SQLModel):
+    name: str
+    description: Optional[str] = None
+    age: int
 
-class UserCreate(BaseModel):
+class User(UserBase, table=True):
+    id: UUID | None = Field(default_factory=uuid4, primary_key=True)
+    
+class UserCreate(UserBase):
+    pass  
+
+class UserRead(UserBase):
     id: UUID
-    name: str = Field(..., min_length=3, max_length=50)
-    description: str = Field(..., max_length=300)
-    age: int = Field(..., ge=0, le=120)

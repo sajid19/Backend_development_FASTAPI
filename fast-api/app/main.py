@@ -1,18 +1,28 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException
 from uuid import UUID
-from .schemas.user import UserCreate
-from .core.database import create_db_and_tables
+from .schemas.user import  User , UserCreate
+from .core.database import create_db_and_tables , SessionDep
 
 app = FastAPI()
 @app.on_event("startup")
 
 def on_startup():
     create_db_and_tables()
+    
+
 
 
 
 DisplayUSER = []
+
+@app.post("/create/user")
+def create_user(user: UserCreate , session: SessionDep):
+    user_create = User.from_orm(user)
+    session.add(user_create)
+    session.commit()
+    session.refresh(user_create)
+    return {"user": user_create, "message": "User created successfully"}
 
 @app.get("/user/list")
 def read_root(limit:int=10, sort:int|None = None):
@@ -21,10 +31,6 @@ def read_root(limit:int=10, sort:int|None = None):
     return DisplayUSER 
 
 
-@app.post("/create/user")
-def create_user(user: UserCreate):
-    DisplayUSER.append(user)
-    return {"user": user, "message": "User created successfully"}
 
 @app.put("/update/user/{user_id}")
 def update_user(user_id: UUID, user: UserCreate):

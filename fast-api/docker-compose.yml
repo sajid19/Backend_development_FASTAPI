@@ -7,4 +7,5 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./app:/code/app  
+      - ./app:/code/app
+      - ./database:/code/database
