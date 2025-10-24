@@ -2,6 +2,8 @@
 from typing import Optional
 from uuid import UUID, uuid4
 from sqlmodel import SQLModel, Field
+from pydantic import BaseModel
+from typing import List
 
 class UserBase(SQLModel):
     name: str
@@ -16,3 +18,6 @@ class UserCreate(UserBase):
 
 class UserRead(UserBase):
     id: UUID
+class UserListResponse(BaseModel):
+    users: List[User]
+    count: int
