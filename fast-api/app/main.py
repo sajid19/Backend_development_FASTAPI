@@ -31,7 +31,7 @@ def read_root(session: SessionDep, offset:int=0,  limit: Annotated[int, Query(le
     )
 
 @app.get("/user/{id}")
-def read_user_details(id: str, session: SessionDep) -> User:
+def read_user_details(id: UUID, session: SessionDep) -> User:
     user = session.get(User, id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
