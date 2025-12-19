@@ -11,10 +11,13 @@ class UserBase(SQLModel):
     age: int
 
 class ShowModel(UserBase):
+    name: str
     pass    
 
-class User(UserBase, table=True):
-    id: UUID | None = Field(default_factory=uuid4, primary_key=True)
+class User(SQLModel):
+    name: str 
+    email: str 
+    password: str 
     
 class UserCreate(UserBase):
     pass  

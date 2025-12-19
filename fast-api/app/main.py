@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException , Query
 from uuid import UUID
 from .schemas.user import  User , UserCreate , UserListResponse , ShowModel
 from .core.database import create_db_and_tables , SessionDep
+from model.model import User as DBUser
 from sqlmodel import  select
 from typing import Annotated
 
@@ -53,3 +54,14 @@ def delete_user(user_id: UUID):
             del DisplayUSER[index]
             return {"message": "User deleted successfully"}
     raise HTTPException(status_code=404, detail="User not found")
+
+
+
+
+@app.post("/auth/user")
+def auth_user(user: User , session: SessionDep):
+    db_user = DBUser(user)
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return {"authuser": db_user, "message": "User created successfully"}
