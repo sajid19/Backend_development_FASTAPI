@@ -10,6 +10,9 @@ class UserBase(SQLModel):
     description: Optional[str] = None
     age: int
 
+class ShowModel(UserBase):
+    pass    
+
 class User(UserBase, table=True):
     id: UUID | None = Field(default_factory=uuid4, primary_key=True)
     

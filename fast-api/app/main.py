@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException , Query
 from uuid import UUID
-from .schemas.user import  User , UserCreate , UserListResponse
+from .schemas.user import  User , UserCreate , UserListResponse , ShowModel
 from .core.database import create_db_and_tables , SessionDep
 from sqlmodel import  select
 from typing import Annotated
@@ -30,8 +30,8 @@ def read_root(session: SessionDep, offset:int=0,  limit: Annotated[int, Query(le
         count=len(userList)
     )
 
-@app.get("/user/{id}")
-def read_user_details(id: UUID, session: SessionDep) -> User:
+@app.get("/user/{id}",  response_model=ShowModel)
+def read_user_details(id: UUID, session: SessionDep ) -> User:
     user = session.get(User, id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
