@@ -1,9 +1,9 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException , Query
 from uuid import UUID
-from .schemas.user import  User , UserCreate , UserListResponse , ShowModel
+from .schemas.user import  User , UserCreate , UserListResponse , ShowModel, AuthUser
 from .core.database import create_db_and_tables , SessionDep
-from model.model import User as DBUser
+from model.model import CreateUser 
 from sqlmodel import  select
 from typing import Annotated
 
@@ -59,8 +59,8 @@ def delete_user(user_id: UUID):
 
 
 @app.post("/auth/user")
-def auth_user(user: User , session: SessionDep):
-    db_user = DBUser(user)
+def auth_user(user: AuthUser , session: SessionDep):
+    db_user = CreateUser(**user.dict())
     session.add(db_user)
     session.commit()
     session.refresh(db_user)

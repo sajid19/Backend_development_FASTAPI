@@ -18,6 +18,11 @@ class User(SQLModel):
     name: str 
     email: str 
     password: str 
+
+class AuthUser(SQLModel):
+    name: str 
+    email: str 
+    password: str     
     
 class UserCreate(UserBase):
     pass  
